@@ -413,7 +413,7 @@ function App() {
                       </tr>
                       <tr>
                         <th>UNIT</th>
-                        <td>{formatVal(employeeResult["Unit"])}</td>
+                        <td>{formatVal(employeeResult["Departement"])}</td>
                       </tr>
                       <tr>
                         <th>BRANCH</th>
