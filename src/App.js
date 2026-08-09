@@ -53,10 +53,10 @@ function App() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === "admin" && password === "admin123") {
+    if (username === "admin" && password === "dimas123") {
       setIsLoggedIn(true);
     } else {
-      alert("Username atau password salah! (Gunakan: admin / admin123)");
+      alert("Username atau password salah!");
     }
   };
 
@@ -182,7 +182,7 @@ function App() {
       <aside className="sidebar">
         <div className="sidebar-brand">
           <Database size={24} />
-          <h2>MyAssets</h2>
+          <h2>Diams Project</h2>
         </div>
         <nav className="sidebar-nav">
           <button
