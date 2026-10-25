@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Project Dimas (Web Aset – DIKA)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplikasi manajemen aset & karyawan (React / CRA). Data diimpor dari CSV (`;`) lewat tombol **Import CSV**
+(`db/db_aset.csv`, `db/db_employee.csv`). Data hanya disimpan di memori selama halaman terbuka — tidak ada penyimpanan di browser, jadi upload CSV lagi setiap membuka/refresh aplikasi.
 
-## Available Scripts
+## Menjalankan
+```
+npm install      # wajib diulang: ada dependency baru "docx"
+npm start
+```
 
-In the project directory, you can run:
+## Struktur
+```
+public/logo.png                 Logo dokumen (dipakai di semua kop form)
+src/
+  App.js                        Shell: login, sidebar, routing tab
+  hooks/useDatabase.js          Data aset/karyawan (memori), indeks NIK/Kode, import CSV
+  hooks/useLogo.js              Memuat public/logo.png (aman untuk Print/PDF/Word)
+  utils/format.js               Angka, Rupiah, tanggal, penyusutan 48 bulan, nomor dokumen
+  utils/data.js                 Normalisasi CSV, upliner (via Upliner_Code), data terbaru, agregasi grafik
+  utils/export.js               Export PDF (html2pdf)
+  utils/exportWord.js           Export Word .docx asli (library "docx"), dibaca dari tampilan form
+  components/Dashboard.jsx      Statistik, grafik kategori aset & gender, tabel 10 terbaru
+  components/CariData.jsx       Pencarian aset / karyawan (+ nama upliner)
+  components/forms/
+    FormParts.jsx               Kop dokumen, tanda tangan, toolbar export, field (dipakai semua form)
+    FormAsetSOP.jsx             Logika Form OP & TELE (variant "op" | "tele")
+    FormOP.jsx / FormTele.jsx   Wrapper tipis
+    FormBulky.jsx               Multi aset (landscape)
+    FormTandaTerima.jsx         A5
+    KetentuanAset.jsx           Halaman 2 (ketentuan kehilangan & kerusakan)
+```
 
-### `npm start`
+## Menambah form baru
+1. Buat komponen di `components/forms/` memakai `FormControls`, `PreviewWrapper`, `DocHeader`, `SignatureTable`.
+2. Tambah satu item di `MENU` (`Sidebar.jsx`) dan satu baris di `pages` (`App.js`).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Aturan bisnis
+- **Upliner**: `Upliner_Code` di data karyawan = NIK upliner → nama diambil dari karyawan ber-NIK tersebut.
+- **Harga Buku**: penyusutan garis lurus 48 bulan dari `Harga Pembelian` & `Tanggal Pembelian`
+  (tanggal kosong = belum disusutkan). **Harga Pasar** = 70% × Harga Buku.
+- **Form OP/TELE**: judul selalu *FORM SERAH TERIMA ASET*; departemen penyerah selalu *Aset*.
+- **Form Bulky**: kolom harga = `Harga Pembelian`.
